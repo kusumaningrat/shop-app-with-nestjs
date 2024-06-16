@@ -18,15 +18,10 @@ export class Barang {
     @Column({ type: "int", default: 0 })
     stok: number
 
-    @Column({ type: "varchar", length: '255'})
-    kategory: string
-
     @Column({ type: "int", default: 0 })
     terjual: number
 
     @Column({ type: "int", default: 0 })
     sisa: number
 
-    @Column({ type: 'boolean', default: false })
-    status: boolean
 }

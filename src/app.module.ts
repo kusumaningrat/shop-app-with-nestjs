@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import db from './config/configuration';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DatabaseService } from './config/database';
@@ -22,9 +20,8 @@ import { Barang } from './modules/barang/barang.entity';
     TypeOrmModule.forFeature([ Barang ]),
     BarangModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     DatabaseService,
     BarangService
   ],

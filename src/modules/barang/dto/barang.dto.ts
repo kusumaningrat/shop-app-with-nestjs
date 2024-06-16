@@ -23,17 +23,10 @@ export class BarangDto {
     stok: number
 
     @IsEmpty()
-    @IsString()
-    kategori: string
-
-    @IsEmpty()
     @IsNumber()
     terjual: number
 
     @IsEmpty()
     @IsNumber()
     sisa: number
-
-    @IsBoolean()
-    status: boolean
 }
