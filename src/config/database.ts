@@ -1,6 +1,8 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { Client } from 'pg';
+import { Barang } from "src/modules/barang/barang.entity";
 
 
 @Injectable()
@@ -31,6 +33,18 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
 
     getClient() {
         return this.client;
+    }
+
+    createTypeOrmOptions(): TypeOrmModuleOptions {
+        return {
+            type: 'postgres',
+            host: this.configService.get<string>('database.db_host'),
+            username: this.configService.get<string>('database.db_user'),
+            password: this.configService.get<string>('database.db_pass'),
+            database: this.configService.get<string>('database.db_name'),
+            entities: [Barang],
+            synchronize: true
+        }
     }
 
 }
