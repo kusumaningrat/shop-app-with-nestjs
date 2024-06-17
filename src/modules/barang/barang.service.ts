@@ -1,8 +1,11 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Barang } from './barang.entity';
 import { Repository } from 'typeorm';
 import { BarangDto } from './dto/barang.dto';
+import { Response } from 'express';
+import { resBuilder } from 'src/commons/utils';
+import { Message, StatusCode } from 'src/commons/constants';
 
 @Injectable()
 export class BarangService {
@@ -28,15 +31,8 @@ export class BarangService {
         return await this.barangRepository.count();
     }
 
-    async create(barangDto: BarangDto): Promise<Barang> {
-        
+    async create(@Res() res: Response, barangDto: BarangDto): Promise<Barang> {
         try {
-            const checkExistingBarang = await this.barangRepository.findOne({ where: { nama_barang: barangDto.nama_barang }});
-
-            if (checkExistingBarang) {
-                throw new ConflictException('Barang sudah ada');
-            }
-
             const barangObj = {
                 id: barangDto.id,
                 nama_barang: barangDto.nama_barang,
@@ -48,11 +44,10 @@ export class BarangService {
             }
 
             const barang = await this.barangRepository.save(barangObj);
-
             return barang
         } catch (err) {
             console.log(err);
-            throw new InternalServerErrorException();
+            resBuilder(res, StatusCode.InternalServerError, Message.InternalError)
         }
     }
 
