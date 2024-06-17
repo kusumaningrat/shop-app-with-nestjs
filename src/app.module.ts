@@ -6,6 +6,11 @@ import { BarangService } from './modules/barang/barang.service';
 import { BarangModule } from './modules/barang/barang.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Barang } from './modules/barang/barang.entity';
+import { UsersController } from './modules/users/users.controller';
+import { UsersService } from './modules/users/users.service';
+import { UsersModule } from './modules/users/users.module';
+import { User } from './modules/users/user.entity';
+import { IsUniqueConstraint } from './commons/validator';
 
 @Module({
   imports: [
@@ -17,13 +22,19 @@ import { Barang } from './modules/barang/barang.entity';
       useClass: DatabaseService,
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([ Barang ]),
+    TypeOrmModule.forFeature(
+      [ 
+        Barang, User 
+      ]),
     BarangModule,
+    UsersModule,
   ],
-  controllers: [],
+  controllers: [UsersController],
   providers: [
     DatabaseService,
-    BarangService
+    BarangService,
+    UsersService,
+    IsUniqueConstraint
   ],
 })
 export class AppModule {}

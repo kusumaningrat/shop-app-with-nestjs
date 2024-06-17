@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { Client } from 'pg';
 import { Barang } from "src/modules/barang/barang.entity";
+import { User } from "src/modules/users/user.entity";
 
 
 @Injectable()
@@ -42,7 +43,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
             username: this.configService.get<string>('database.db_user'),
             password: this.configService.get<string>('database.db_pass'),
             database: this.configService.get<string>('database.db_name'),
-            entities: [Barang],
+            entities: [Barang, User],
             synchronize: true
         }
     }

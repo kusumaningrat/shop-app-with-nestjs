@@ -1,32 +1,28 @@
-import { IsBoolean, IsEmpty, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsEmpty, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { isUnique } from "src/commons/validator";
 
 export class BarangDto {
 
-    @IsEmpty()
-    @IsNumber()
     id: number
 
-    @IsEmpty()
+    @IsNotEmpty()
     @IsString()
+    @isUnique({ tableName: 'barang', column: 'nama_barang' })
     nama_barang: string
 
-    @IsEmpty()
+    @IsNotEmpty()
     @IsString()
     deskripsi: string
 
-    @IsEmpty()
-    @IsNumber()
+    @IsNotEmpty()
     harga: number
     
-    @IsEmpty()
-    @IsNumber()
+    @IsNotEmpty()
     stok: number
 
     @IsEmpty()
-    @IsNumber()
     terjual: number
 
     @IsEmpty()
-    @IsNumber()
     sisa: number
 }

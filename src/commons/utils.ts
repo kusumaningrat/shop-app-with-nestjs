@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import * as bcrypt from 'bcrypt';
 
 interface ResponseData {
     message: string;
@@ -20,3 +21,12 @@ export const resBuilder = (res: Response, code: number, message: string, extraDa
 
     res.status(code).json(responseData);
 };
+
+export const hashPassword = (password) => {
+    const saltArounds: number = 10;
+
+    const salt = bcrypt.genSaltSync(saltArounds);
+    const hash = bcrypt.hashSync(password, salt)
+
+    return hash
+}

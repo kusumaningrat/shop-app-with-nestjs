@@ -8,6 +8,8 @@ export const Message = {
     DataFailUpdated: "Data failed to updated",
     DataFailRemoved: "Data failed to removed",
     SuccessfullyRegister: "You successfully register.",
+    DataAlreadyExist: "Data already Exist",
+    InternalError: "Internal Server Error"
 }
 
 export const StatusCode = {
