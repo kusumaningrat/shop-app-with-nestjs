@@ -10,6 +10,7 @@ import { BarangDto } from './dto/barang.dto';
 import { BarangService } from './barang.service';
 import { resBuilder } from 'src/commons/utils';
 import { Message, StatusCode } from 'src/commons/constants';
+import { CustomError } from 'src/commons/customError';
 
 @Controller('/api/v1/barang/')
 export class BarangController {
@@ -34,8 +35,14 @@ export class BarangController {
 
     @Post('')
     async create(@Res() res: Response, @Body() barangDto: BarangDto) {
-        const barang = await this.barangService.create(res, barangDto);
-        return resBuilder(res, StatusCode.Created, Message.DataAdded, barang)
+        try {
+            const barang = await this.barangService.create(res, barangDto);
+            return resBuilder(res, StatusCode.Created, Message.DataAdded, barang)
+        } catch(err) {
+            if (err instanceof CustomError){
+                return resBuilder(res, StatusCode.Conflict, Message.DataAlreadyExist)
+            }
+        }
     }
 
     @Put(':id')

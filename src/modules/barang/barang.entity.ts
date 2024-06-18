@@ -6,7 +6,7 @@ export class Barang {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({ type: "varchar", length: '100'})
+    @Column({ type: "varchar", length: '100' })
     nama_barang: string
 
     @Column({ type: "varchar", length: '255'})
