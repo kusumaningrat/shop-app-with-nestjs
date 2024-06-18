@@ -26,10 +26,7 @@ export class BarangController {
 
     @Get(':id')
     async getOne(@Res() res: Response, @Param('id') id: number) {
-        const barang = await this.barangService.getOne(id);
-        if (!barang) {
-            return resBuilder(res, StatusCode.NotFound, Message.DataFailLoaded)
-        }
+        const barang = await this.barangService.getOne(res, id);
         return resBuilder(res, StatusCode.OK, Message.DataLoaded, barang)
     }
 
@@ -47,20 +44,26 @@ export class BarangController {
 
     @Put(':id')
     async update(@Res() res: Response, @Param('id') id: number, @Body() barangDto: BarangDto ) {
-        const barang = await this.barangService.update(res, id, barangDto);
-        if (!barang) {
-            return resBuilder(res, StatusCode.NotFound, Message.DataFailLoaded)
+        try {
+            const user = await this.barangService.update(res, id, barangDto)
+            resBuilder(res, StatusCode.OK, Message.DataUpdated, user)
+        } catch (err) {
+            if (err instanceof CustomError) {
+                resBuilder(res, StatusCode.NotFound, Message.DataFailLoaded)
+            }
         }
-        return resBuilder(res, StatusCode.OK, Message.DataUpdated, barang)
     }
 
     @Delete(':id')
     async destroy(@Res() res: Response, @Param('id') id: number) {
-        const barang = await this.barangService.destroy(id);
-        if (!barang) {
-            return resBuilder(res, StatusCode.NotFound, Message.DataFailLoaded)
+        try {
+            await this.barangService.destroy(res, id);
+            const count = await this.barangService.countAll();
+            return resBuilder(res, StatusCode.OK, Message.DataRemoved, count)
+        } catch (err) {
+            if (err instanceof CustomError) {
+                resBuilder(res, StatusCode.NotFound, Message.DataFailLoaded)
+            }
         }
-        const count = await this.barangService.countAll();
-        return resBuilder(res, StatusCode.OK, Message.DataRemoved, count)
     }
 }

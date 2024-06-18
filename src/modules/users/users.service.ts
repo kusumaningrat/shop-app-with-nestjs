@@ -60,7 +60,11 @@ export class UsersService {
             return await this.userRepository.save(userObj)
         } catch (err) {
             console.log(err)
-            resBuilder(res, StatusCode.InternalServerError, err.detail);
+            if (err instanceof CustomError) {
+                resBuilder(res, StatusCode.NotFound, Message.DataFailLoaded);
+            } else {
+                resBuilder(res, StatusCode.InternalServerError, Message.InternalError)
+            }
         }
     }
 
@@ -68,9 +72,9 @@ export class UsersService {
 
         try {
 
-            const check = await this.userRepository.findOne({ where: { id }});
-            console.log(check)
-            IfEmptyThrowError(check, Message.DataFailLoaded)
+            const user = await this.userRepository.findOne({ where: { id }});
+            console.log(user)
+            IfEmptyThrowError(user, Message.DataFailLoaded)
 
             await this.userRepository.update(id, { ...userDto, id })
             return await this.userRepository.findOne({ where: { id }})

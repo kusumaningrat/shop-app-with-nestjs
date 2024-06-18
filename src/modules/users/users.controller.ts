@@ -52,7 +52,8 @@ export class UsersController {
     async destroy(@Res() res: Response, @Param('id') id: number) {
         try {
             await this.userService.destroy(res, id);
-            resBuilder(res, StatusCode.OK, Message.DataRemoved)
+            const count = await this.userService.countAll();
+            resBuilder(res, StatusCode.OK, Message.DataRemoved, count)
         } catch (err) {
             if (err instanceof CustomError) {
                 resBuilder(res, StatusCode.NotFound, Message.DataFailLoaded)
