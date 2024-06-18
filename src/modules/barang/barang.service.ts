@@ -19,12 +19,8 @@ export class BarangService {
         return await this.barangRepository.find();
     }
 
-    async getOne(id: number): Promise<Barang> {
-        const barang = await this.barangRepository.findOne({ where: { id }});
-        if (!barang) {
-            throw new NotFoundException('Barang tidak ada');
-        }
-        return barang
+    async getOne(id: number): Promise<Barang> | null {
+        return await this.barangRepository.findOne({ where: { id }});
     }
 
     async countAll(): Promise<Number> {
@@ -51,31 +47,24 @@ export class BarangService {
         }
     }
 
-    async update(id: number, barangDto: Partial<Barang>): Promise<Barang> {
+    async update(@Res() res: Response, id: number, barangDto: Partial<Barang>): Promise<Barang | null> {
 
         try {
-            const barang = await this.barangRepository.findOne({ where: { id: id }});
-            if (!barang) {
-                throw new NotFoundException('Barang tidak ada');
-            }
+            await this.barangRepository.findOne({ where: { id }});
 
-            await this.barangRepository.update(id, { ...barangDto })
+            barangDto = { ...barangDto, id };
+            await this.barangRepository.update(id, barangDto )
 
-            return await this.barangRepository.findOne({ where: { id: id }});
+            return await this.barangRepository.findOne({ where: { id }});
         } catch (err) {
             console.log(err)
-            throw new InternalServerErrorException()
+            resBuilder(res, StatusCode.InternalServerError, Message.InternalError)
         }
     }
 
     async destroy(id: number): Promise<Barang> {
         const barang = await this.barangRepository.findOne({ where: { id: id }});
-        if (!barang) {
-            throw new NotFoundException('Barang tidak ada');
-        }
-
         await this.barangRepository.delete(id);
-
         return barang;
     }
 

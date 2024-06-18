@@ -1,5 +1,4 @@
 import { IsBoolean, IsEmpty, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { isUnique } from "src/commons/validator";
 
 export class BarangDto {
 
@@ -7,7 +6,6 @@ export class BarangDto {
 
     @IsNotEmpty()
     @IsString()
-    @isUnique({ tableName: 'barang', column: 'nama_barang' })
     nama_barang: string
 
     @IsNotEmpty()
@@ -20,9 +18,7 @@ export class BarangDto {
     @IsNotEmpty()
     stok: number
 
-    @IsEmpty()
     terjual: number
 
-    @IsEmpty()
     sisa: number
 }

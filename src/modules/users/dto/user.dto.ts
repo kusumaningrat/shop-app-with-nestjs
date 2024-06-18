@@ -1,5 +1,4 @@
 import { IsEmail, IsEmpty, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { isUnique } from "src/commons/validator";
 
 export class UserDto {
 
@@ -8,7 +7,6 @@ export class UserDto {
 
     @IsEmail()
     @IsNotEmpty()
-    @isUnique({ tableName: 'user', column: 'email'} )
     email: string
 
     @IsString()
@@ -17,7 +15,6 @@ export class UserDto {
 
     @IsString()
     @IsNotEmpty()
-    @isUnique({ tableName: 'user', column: 'username'} )
     username: string
 
     @IsString()

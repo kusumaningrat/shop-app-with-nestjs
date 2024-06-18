@@ -18,7 +18,6 @@ export class UsersController {
     }
 
     @Post('')
-    @UsePipes(new ValidationPipe({ transform: true }))
     async create(@Res() res: Response, @Body() userDto: UserDto) {
         const user = await this.userService.create(res, userDto);
         resBuilder(res, StatusCode.OK, Message.DataAdded, user);

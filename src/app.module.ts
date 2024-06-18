@@ -10,7 +10,6 @@ import { UsersController } from './modules/users/users.controller';
 import { UsersService } from './modules/users/users.service';
 import { UsersModule } from './modules/users/users.module';
 import { User } from './modules/users/user.entity';
-import { IsUniqueConstraint } from './commons/validator';
 
 @Module({
   imports: [
@@ -34,7 +33,6 @@ import { IsUniqueConstraint } from './commons/validator';
     DatabaseService,
     BarangService,
     UsersService,
-    IsUniqueConstraint
   ],
 })
 export class AppModule {}
