@@ -49,17 +49,12 @@ export class BarangService {
 
     async update(@Res() res: Response, id: number, barangDto: Partial<Barang>): Promise<Barang | null> {
 
-        try {
-            await this.barangRepository.findOne({ where: { id }});
+        await this.barangRepository.findOne({ where: { id }});
 
-            barangDto = { ...barangDto, id };
-            await this.barangRepository.update(id, barangDto )
+        barangDto = { ...barangDto, id };
+        await this.barangRepository.update(id, barangDto )
 
-            return await this.barangRepository.findOne({ where: { id }});
-        } catch (err) {
-            console.log(err)
-            resBuilder(res, StatusCode.InternalServerError, Message.InternalError)
-        }
+        return await this.barangRepository.findOne({ where: { id }});
     }
 
     async destroy(id: number): Promise<Barang> {

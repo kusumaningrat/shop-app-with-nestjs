@@ -4,11 +4,11 @@ import * as bcrypt from 'bcrypt';
 interface ResponseData {
     message: string;
     statusCode: number;
-    count?: any; 
     data?: any;
+    count?: any; 
 }
 
-export const resBuilder = (res: Response, code: number, message: string, extraData?: any, data?: any) => {
+export const resBuilder = (res: Response, code: number, message: string, data?: any, extraData?: any) => {
     const responseData: ResponseData = { message, statusCode: code };
 
     if (extraData !== undefined) {
